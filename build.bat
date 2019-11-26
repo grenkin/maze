@@ -1,0 +1,1 @@
+g++ run_maze.cpp maze/maze.cpp --std=c++11 -o maze.exe
