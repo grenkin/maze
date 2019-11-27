@@ -1,1 +1,1 @@
-g++ run_maze.cpp maze/maze.cpp --std=c++11 -o maze.exe
+g++ run_maze.cpp maze/maze.cpp maze/console.cpp maze/maze_gen.cpp maze/maze_path.cpp maze/maze_print.cpp --std=c++11 -o maze.exe

@@ -7,6 +7,7 @@ using namespace std;
 
 int main()
 {
+    // лабиринт 5x5
     Maze maze(5, 5);
 
     // добавляем стенки
@@ -21,7 +22,19 @@ int main()
     //   ставим стенку с вероятностью p%
     maze.generate_random(p);
 
+    // вывести лабиринт на экран
     maze.print();
+    // нажмите любую клавишу
+    console::pause();
+    // очистить экран
+    console::clear_screen();
+
+    // найти случайный путь в лабиринте между двумя пунктами
+    Maze::Path path = maze.find_random_path({1, 1}, {3, 3});
+    // вывести путь на экран
+    maze.animate_path(path, 100);
+    // нажмите любую клавишу
+    console::pause();
 
     return 0;
 }
