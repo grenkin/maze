@@ -3,6 +3,7 @@
 
     Реализации методов
         Maze
+            print_maze
             print
             print_path
             animate_path
@@ -14,7 +15,9 @@
 
 using namespace std;
 
-/***********************************************/
+/************************************************
+    объявления
+************************************************/
 
 // символы для вывода на экран
 enum console_chars {
@@ -69,13 +72,16 @@ enum console_chars {
 #endif // WIN_CONSOLE
 };
 
-void write (console_chars ch) { console::write(ch); }
-// вывести узловой символ по данным о том, есть ли стенки слева, справа, сверху и снизу
+// вывести символ в файл (поток) out
+void print_c (FILE *out, console_chars ch) { console::write(ch, out); }
+// вывести на экран узловой символ по информации о стенках вокруг него
 // walls[] = { wall_left, wall_right, wall_up, wall_down }
-void write_node (array<bool, 4> walls);
+void print_node (FILE *out, array<bool, 4> walls);
 
 
-/***********************************************/
+/************************************************
+    реализация методов класса Maze
+************************************************/
 
 // вывести лабиринт в файл (поток) out
 // пункт [i,j] вывести как символ c[i,j], i=1..n, j=1..m
@@ -86,29 +92,31 @@ void Maze::print_maze (vector<vector<char> > c, FILE *out)
         for (int j = 0; j <= m; ++j) {
             // выводим содержимое точки (i, j)
             if (i > 0 && j > 0)
-                console::write(c[i][j]);
+                console::write(c[i][j], out);
             else
-                write(CH_SPACE);
+                print_c(out, CH_SPACE);
             // выводим стенку справа от точки (i, j)
             if (walls_v[i][j])  // правее точки (i, j) есть стенка
-                write(CH_VERT_LINE);
+                print_c(out, CH_VERT_LINE);
             else
-                write(CH_SPACE);
+                print_c(out, CH_SPACE);
         }
-        write(CH_LINE_BREAK);
+        print_c(out, CH_LINE_BREAK);
         for (int j = 0; j <= m; ++j) {
             // выводим горизонтальную стенку снизу от точки (i, j)
             if (walls_h[i][j])  // ниже точки (i, j) есть стенка
-                write(CH_HORIZ_LINE);
+                print_c(out, CH_HORIZ_LINE);
             else
-                write(CH_SPACE);
+                print_c(out, CH_SPACE);
             // выводим узловой символ в правом нижнем углу квадратика
-            write_node({walls_h[i][j], walls_h[i][j+1],
+            print_node(out, {walls_h[i][j], walls_h[i][j+1],
                 walls_v[i][j], walls_v[i+1][j]});
         }
-        write(CH_LINE_BREAK);
+        print_c(out, CH_LINE_BREAK);
     }
 }
+
+/***********************************************/
 
 // вывести лабиринт в файл (поток) out
 // p - текущее местоположение
@@ -158,11 +166,14 @@ void Maze::animate_path (Maze::Path path, int delay_ms)
     }
 }
 
-/***********************************************/
 
+/************************************************
+    реализация вспомогательных функций
+************************************************/
 
+// вывести на экран узловой символ по информации о стенках вокруг него
+void print_node (FILE *out, array<bool, 4> walls)
 // walls[] = { wall_left, wall_right, wall_up, wall_down }
-void write_node (array<bool, 4> walls)
 {
     console_chars node_chars[16] = {
         CH_NODE_0000, CH_NODE_0001, CH_NODE_0010, CH_NODE_0011,
@@ -177,5 +188,5 @@ void write_node (array<bool, 4> walls)
         ind += walls[3 - i] * z;
         z *= 2;
     }
-    write(node_chars[ind]);
+    print_c(out, node_chars[ind]);
 }

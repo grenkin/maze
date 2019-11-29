@@ -57,30 +57,11 @@ struct Maze {
 
     // конструктор класса Maze
     // создает лабиринт n x m со стенками по краям
-    Maze (int n_arg, int m_arg)
-        : n(n_arg), m(m_arg)
-    {
-        walls_h.resize(n + 2);  // walls_h[0..n+1]
-        for (int i = 0; i <= n + 1; ++i)
-            walls_h[i].resize(m + 2);  // walls_h[i][0..m+1]
-        walls_v.resize(n + 2);  // walls_v[0..n+1]
-        for (int i = 0; i <= n + 1; ++i)
-            walls_v[i].resize(m + 2);  // walls_v[i][0..m+1]
+    Maze (int n_arg, int m_arg);
 
-        /* добавляем стенки по краям лабиринта */
-        // добавляем горизонтальные стенки после 0-й и n-й строки
-        //   в столбцах j=1..m
-        for (int i = 0; i <= n; i += n) {  // for i = {0, n}
-            for (int j = 1; j <= m; ++j)
-                walls_h[i][j] = true;
-        }
-        // добавляем вертикальные стенки после 0-го и m-го столбца
-        //   в строках i=1..n
-        for (int j = 0; j <= m; j += m) {  // for j = {0, m}
-            for (int i = 1; i <= n; ++i)
-                walls_v[i][j] = true;
-        }
-    }
+    // конструктор класса Maze
+    // считывает данные о лабиринте из файла
+    Maze (const char *file_name);
 
     // случайная генерация лабиринта
     //   каждая стенка ставится с вероятностью prob процентов
@@ -114,7 +95,13 @@ struct Maze {
     // вывести путь в лабиринте на экран с паузами delay_ms мс
     void animate_path (Path path, int delay_ms);
 
+    // вывести данные о лабиринте в файл
+    void print_data (const char *file_name);
+
 private:
+    // инициализация лабиринта n x m со стенками по краям
+    void init_maze (int n, int m);
+
     // вывести лабиринт в файл (поток) out
     // пункт [i,j] вывести как символ c[i,j], i=1..n, j=1..m
     void print_maze (std::vector<std::vector<char> > c, FILE *out);

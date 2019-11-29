@@ -25,7 +25,7 @@ namespace console {
         this_thread::sleep_for(chrono::nanoseconds(1000000 * ms));
     }
 
-    void pause()
+    void pause ()
     {
         // https://stackoverflow.com/questions/1449324/how-to-simulate-press-any-key-to-continue
     #ifdef WIN_CONSOLE
@@ -35,9 +35,9 @@ namespace console {
     #endif // WIN_CONSOLE
     }
 
-    void write (char ch)
+    void write (char ch, FILE *out)
     {
-        putc(ch, stdout);
+        putc(ch, out);
     }
 
 }
