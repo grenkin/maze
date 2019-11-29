@@ -4,10 +4,11 @@
     Реализации методов
         Maze
             print
+            print_path
             animate_path
 */
 
-#include <iostream>
+#include <cstdio>
 #include <array>
 #include "maze.h"
 
@@ -76,20 +77,16 @@ void write_node (array<bool, 4> walls);
 
 /***********************************************/
 
-// вывести лабиринт на экран
-void Maze::print (Point c)
+// вывести лабиринт в файл (поток) out
+// пункт [i,j] вывести как символ c[i,j], i=1..n, j=1..m
+void Maze::print_maze (vector<vector<char> > c, FILE *out)
 {
-    console::clear_screen();
     for (int i = 0; i <= n; ++i) {
         /* выводим квадратик 2x2, соответствующий точке (i, j) */
         for (int j = 0; j <= m; ++j) {
             // выводим содержимое точки (i, j)
-            if (i > 0 && j > 0) {
-                if (i == c.i && j == c.j)
-                    write(CH_UNIT);
-                else
-                    write(CH_POINT);
-            }
+            if (i > 0 && j > 0)
+                console::write(c[i][j]);
             else
                 write(CH_SPACE);
             // выводим стенку справа от точки (i, j)
@@ -113,11 +110,49 @@ void Maze::print (Point c)
     }
 }
 
+// вывести лабиринт в файл (поток) out
+// p - текущее местоположение
+void Maze::print (Point p, FILE *out)
+{
+    /* заполняем матрицу пунктов лабиринта */
+    // [0..n, 0..m]Char c
+    vector<vector<char> > c(n + 1);
+    for (int i = 0; i <= n; ++i)
+        c[i].resize(m + 1, CH_POINT);
+    c[p.i][p.j] = CH_UNIT;
+
+    print_maze(c, out);
+}
+
+// вывести путь в лабиринте в файл (поток) out
+void Maze::print_path (Path path, FILE *out)
+{
+    /* заполняем матрицу пунктов лабиринта */
+    // [0..n, 0..m]Char c
+    vector<vector<char> > c(n + 1);
+    for (int i = 0; i <= n; ++i)
+        c[i].resize(m + 1, CH_POINT);
+
+    // перечисляем пункты (p) пути в лабиринте
+    for (auto p : path) {
+        c[p.i][p.j] = CH_UNIT;
+    }
+    c[path.front().i][path.front().j] = 'S';
+    c[path.back().i][path.back().j] = 'F';
+    /* матрица заполнена */
+
+    print_maze(c, out);
+
+    // вывести длину пути
+    fprintf(out, "\nLength = %d\n", path.size() - 1);
+}
+
 // вывести путь в лабиринте на экран с паузами delay_ms мс
 void Maze::animate_path (Maze::Path path, int delay_ms)
 {
     // перечисляем пункты (p) пути в лабиринте
     for (auto p : path) {
+        console::clear_screen();
         print(p);
         console::delay(delay_ms);
     }

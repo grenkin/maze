@@ -1,6 +1,7 @@
 #ifndef PRINT_MAZE_H_INCLUDED
 #define PRINT_MAZE_H_INCLUDED
 
+#include <cstdio>
 #include <vector>
 #include "console.h"
 
@@ -103,12 +104,20 @@ struct Maze {
     //   path[0..n]:  path[0] = a, path[n] = b
     Path find_shortest_path (Point a, Point b);
 
-    // вывести лабиринт на экран
-    // c - текущее местоположение
-    void print (Point c = {0, 0});
+    // вывести лабиринт в файл (поток) out
+    // p - текущее местоположение
+    void print (Point p = {0, 0}, FILE *out = stdout);
+
+    // вывести путь в лабиринте в файл (поток) out
+    void print_path (Path path, FILE *out = stdout);
 
     // вывести путь в лабиринте на экран с паузами delay_ms мс
     void animate_path (Path path, int delay_ms);
+
+private:
+    // вывести лабиринт в файл (поток) out
+    // пункт [i,j] вывести как символ c[i,j], i=1..n, j=1..m
+    void print_maze (std::vector<std::vector<char> > c, FILE *out);
 };
 
 #endif // PRINT_MAZE_H_INCLUDED

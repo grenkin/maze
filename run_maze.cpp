@@ -22,17 +22,26 @@ int main()
     //   ставим стенку с вероятностью p%
     maze.generate_random(p);
 
+    // очистить экран
+    console::clear_screen();
     // вывести лабиринт на экран
     maze.print();
     // нажмите любую клавишу
     console::pause();
+
     // очистить экран
     console::clear_screen();
-
     // найти случайный путь в лабиринте между двумя пунктами
     Maze::Path path = maze.find_random_path({1, 1}, {3, 3});
-    // вывести путь на экран
+    // вывести путь на экран с паузами
     maze.animate_path(path, 100);
+    // нажмите любую клавишу
+    console::pause();
+
+    // очистить экран
+    console::clear_screen();
+    // вывести путь на экран
+    maze.print_path(path);
     // нажмите любую клавишу
     console::pause();
 
