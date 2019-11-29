@@ -1,5 +1,5 @@
-#ifndef PRINT_MAZE_H_INCLUDED
-#define PRINT_MAZE_H_INCLUDED
+#ifndef MAZE_H_INCLUDED
+#define MAZE_H_INCLUDED
 
 #include <cstdio>
 #include <vector>
@@ -57,7 +57,7 @@ struct Maze {
 
     // конструктор класса Maze
     // создает лабиринт n x m со стенками по краям
-    Maze (int n_arg, int m_arg);
+    Maze (int n, int m);
 
     // конструктор класса Maze
     // считывает данные о лабиринте из файла
@@ -78,11 +78,11 @@ struct Maze {
     Point move_dir (Point p, Dir dir);
 
     // найти случайный путь в лабиринте из пункта a в пункт b
-    //   path[0..n]:  path[0] = a, path[n] = b
+    //   path[0..k]:  path[0] = a, path[k] = b
     Path find_random_path (Point a, Point b);
 
     // найти кратчайший путь в лабиринте из пункта a в пункт b
-    //   path[0..n]:  path[0] = a, path[n] = b
+    //   path[0..k]:  path[0] = a, path[k] = b
     Path find_shortest_path (Point a, Point b);
 
     // вывести лабиринт в файл (поток) out
@@ -107,4 +107,4 @@ private:
     void print_maze (std::vector<std::vector<char> > c, FILE *out);
 };
 
-#endif // PRINT_MAZE_H_INCLUDED
+#endif // MAZE_H_INCLUDED

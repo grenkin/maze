@@ -27,14 +27,6 @@ int main()
     // лабиринт n x m
     Maze maze(n, m);
 
-/* ввод начального и конечного пунктов */
-    // очистить экран
-    console::clear_screen();
-    // вывести лабиринт на экран
-    maze.print();
-    // ввод пунктов
-    Maze::Point A = read_point("A"), B = read_point("B");
-
 
 /* демонстрация ручного ввода стенок */
     // добавляем стенки
@@ -55,23 +47,48 @@ int main()
     // вывести лабиринт на экран
     maze.print();
     // нажмите любую клавишу
-    console::pause();
+    // console::pause();
+
+
+/* ввод начального и конечного пунктов */
+    /*
+    // очистить экран
+    console::clear_screen();
+    // вывести лабиринт на экран
+    maze.print();
+    */
+    // ввод пунктов
+    Maze::Point A = read_point("A"), B = read_point("B");
 
 
 /* демонстрация путей в лабиринте */
     // очистить экран
     console::clear_screen();
     // найти случайный путь в лабиринте между двумя пунктами
-    Maze::Path path = maze.find_random_path(A, B);
+    Maze::Path path1 = maze.find_random_path(A, B);
     // вывести путь на экран с паузами
-    maze.animate_path(path, 100);
+    maze.animate_path(path1, 50);
+    // нажмите любую клавишу
+    console::pause();
+    // очистить экран
+    console::clear_screen();
+    // вывести путь на экран
+    maze.print_path(path1);
     // нажмите любую клавишу
     console::pause();
 
     // очистить экран
     console::clear_screen();
+    // найти кратчайший путь в лабиринте между двумя пунктами
+    Maze::Path path2 = maze.find_shortest_path(A, B);
+    // вывести путь на экран с паузами
+    maze.animate_path(path2, 100);
+    // нажмите любую клавишу
+    console::pause();
+    // очистить экран
+    console::clear_screen();
     // вывести путь на экран
-    maze.print_path(path);
+    maze.print_path(path2);
     // нажмите любую клавишу
     console::pause();
 
