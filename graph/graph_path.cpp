@@ -8,6 +8,7 @@
 */
 
 #include <stack>
+#include <queue>
 #include <algorithm>
 #include "graph.h"
 
@@ -79,9 +80,37 @@ Graph::Path Graph::find_dfs_path (int a, int b)
 //   path[0..k]:  path[0] = a, path[k] = b
 Graph::Path Graph::find_shortest_path (int a, int b)
 {
-    // TODO
+    /*
+       Автор - Ангелина Дончак
+    */
 
+    queue<int> q;
+    vector<bool> visited(n);
+    vector<int> distance(n), source(n);
+    q.push(a);
+    visited[a] = true;
+    source[a] = -1;
 
-    // заглушка
-    return find_dfs_path(a, b);
+    while (!q.empty()) {
+        int from = q.front();
+        q.pop();
+
+        for (auto to: adj[from]) {
+            if (!visited[to]) {
+                distance[to] = distance[from] + 1;
+                visited[to] = true;
+                source[to] = from;
+                q.push(to);
+            }
+        }
+    }
+
+    Path path;
+    if (visited[b]) {
+        for (int v = b; v != -1; v = source[v])
+            path.push_back(v);
+        reverse(path.begin(), path.end());
+    }
+
+    return path;
 }
